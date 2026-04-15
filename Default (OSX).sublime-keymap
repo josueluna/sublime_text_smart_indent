@@ -1,0 +1,6 @@
+[
+  {
+    "keys": ["super+alt+i"],
+    "command": "smart_indent_format_file"
+  }
+]

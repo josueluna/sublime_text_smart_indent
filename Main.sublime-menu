@@ -1,0 +1,11 @@
+[
+  {
+    "id": "tools",
+    "children": [
+      {
+        "caption": "Smart Indent: Format File",
+        "command": "smart_indent_format_file"
+      }
+    ]
+  }
+]
