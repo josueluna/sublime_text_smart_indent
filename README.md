@@ -1,7 +1,7 @@
 # Smart Indent (Sublime Text 3)
 ![Sublime Text](https://img.shields.io/badge/Sublime%20Text-Plugin-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-active-success)
+![Status](https://img.shields.io/badge/status-beta-orange)
 ![Code Style](https://img.shields.io/badge/code%20style-consistent-brightgreen)
 
 Smart Indent is a Sublime Text 3 plugin that formats a file using lightweight, rules-based indentation.
