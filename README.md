@@ -11,6 +11,7 @@ It detects language from both file extension and syntax, then applies language-s
 
 - Command Palette command: **Smart Indent: Format File**
 - Optional auto-format on save (`format_on_save` setting)
+- Optional format-on-save language allowlist (`format_on_save_languages`)
 - Respects editor indentation preferences:
   - `translate_tabs_to_spaces`
   - `tab_size`
@@ -63,7 +64,8 @@ Add to `SmartIndent.sublime-settings`:
 
 ```json
 {
-  "format_on_save": true
+  "format_on_save": true,
+  "format_on_save_languages": ["python", "javascript", "typescript"]
 }
 ```
 

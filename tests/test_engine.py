@@ -1,7 +1,7 @@
 import unittest
 
 from smart_indent_engine import format_text
-from smart_indent_languages import detect_language
+from smart_indent_languages import detect_language, is_language_allowed
 
 
 class DetectionTests(unittest.TestCase):
@@ -41,6 +41,21 @@ class EngineTests(unittest.TestCase):
     def test_fallback_plain_text(self):
         source = "hello\nworld\n"
         self.assertEqual(format_text(source, "text", "    "), source)
+
+
+class FormatOnSaveAllowlistTests(unittest.TestCase):
+    def test_none_allowlist_allows_all_languages(self):
+        self.assertTrue(is_language_allowed("python", None))
+
+    def test_empty_allowlist_allows_all_languages(self):
+        self.assertTrue(is_language_allowed("markdown", []))
+
+    def test_allowlist_filters_languages(self):
+        self.assertTrue(is_language_allowed("python", ["python", "javascript"]))
+        self.assertFalse(is_language_allowed("html", ["python", "javascript"]))
+
+    def test_allowlist_is_case_insensitive(self):
+        self.assertTrue(is_language_allowed("TypeScript", ["typescript"]))
 
 
 if __name__ == "__main__":
