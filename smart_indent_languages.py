@@ -56,3 +56,19 @@ def detect_language(file_name=None, syntax=None):
         lang = "text"
 
     return lang
+
+
+def is_language_allowed(language, allowlist):
+    """Return True when the detected language is allowed by settings."""
+    if allowlist is None:
+        return True
+
+    if isinstance(allowlist, str):
+        normalized = {allowlist.strip().lower()}
+    else:
+        normalized = {str(item).strip().lower() for item in allowlist if str(item).strip()}
+
+    if not normalized:
+        return True
+
+    return (language or "text").lower() in normalized

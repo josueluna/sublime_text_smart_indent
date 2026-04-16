@@ -6,7 +6,7 @@ import sublime
 import sublime_plugin
 
 from smart_indent_engine import format_text
-from smart_indent_languages import detect_language
+from smart_indent_languages import detect_language, is_language_allowed
 from smart_indent_utils import get_indent_unit
 
 
@@ -51,6 +51,11 @@ class SmartIndentAutoFormatOnSaveListener(sublime_plugin.EventListener):
 
         # Avoid modifying command palette / quick panel / widget views.
         if view.settings().get("is_widget"):
+            return
+
+        language = detect_language(view.file_name(), view.settings().get("syntax"))
+        allowed_languages = package_settings.get("format_on_save_languages")
+        if not is_language_allowed(language, allowed_languages):
             return
 
         view.run_command("smart_indent_format_file")
