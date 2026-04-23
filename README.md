@@ -1,4 +1,4 @@
-# Smart Indent (Sublime Text 3)
+# Smart Indent (Sublime Text Plugin)
 ![Sublime Text](https://img.shields.io/badge/Sublime%20Text-Plugin-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-beta-orange)
@@ -31,6 +31,11 @@ It detects language from both file extension and syntax, then applies language-s
 - Python
 - Markdown (basic)
 - Plain text fallback
+
+## Compatibility
+
+- Designed for Sublime Text 3 and 4 plugin APIs
+- Uses only standard `sublime` / `sublime_plugin` modules (no external Python dependencies)
 
 ## Installation
 
@@ -146,3 +151,14 @@ def run():
 - Add per-language toggles/settings
 - Improve multiline string/comment awareness
 - Add benchmarks and larger regression test fixtures
+
+
+## Development
+
+Run tests locally:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+CI runs this same command on pushes and pull requests.

@@ -42,9 +42,6 @@ PYTHON_DEDENT_PREFIXES = (
 )
 
 
-_DEF_OR_CLASS_RE = re.compile(r"^\s*(async\s+def|def|class)\s+")
-
-
 def _sanitize_for_braces(line):
     """Remove quoted strings and single-line comments before brace counting."""
     stripped = re.sub(r"'(?:\\.|[^'\\])*'", "''", line)
@@ -168,8 +165,6 @@ def format_text(text, language, indent_unit):
             depth = clamp_depth(effective_depth + _html_delta(raw))
         elif language == "python":
             if _python_open_block(raw):
-                depth = effective_depth + 1
-            elif _DEF_OR_CLASS_RE.match(stripped):
                 depth = effective_depth + 1
             elif stripped.startswith(PYTHON_DEDENT_PREFIXES):
                 depth = effective_depth

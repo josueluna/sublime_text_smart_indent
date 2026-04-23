@@ -38,6 +38,17 @@ class EngineTests(unittest.TestCase):
         expected = "- item\n```js\nfunction x(){\nreturn 1\n}\n```\n"
         self.assertEqual(format_text(source, "markdown", "  "), expected)
 
+
+    def test_python_malformed_def_does_not_force_depth(self):
+        source = "def maybe_broken\nprint('x')\n"
+        expected = "def maybe_broken\nprint('x')\n"
+        self.assertEqual(format_text(source, "python", "    "), expected)
+
+    def test_js_string_braces_are_ignored(self):
+        source = "function x(){\nconsole.log(\"{\")\n}\n"
+        expected = "function x(){\n    console.log(\"{\")\n}\n"
+        self.assertEqual(format_text(source, "javascript", "    "), expected)
+
     def test_fallback_plain_text(self):
         source = "hello\nworld\n"
         self.assertEqual(format_text(source, "text", "    "), source)

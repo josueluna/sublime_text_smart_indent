@@ -1,0 +1,15 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Test and tooling caches
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Editor/OS noise
+.DS_Store
+Thumbs.db
+*.swp
