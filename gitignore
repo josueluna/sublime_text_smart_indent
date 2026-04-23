@@ -1,6 +1,0 @@
-# Ignore folders
-node_modules/
-dist/
-
-# Ignore files
-.DS_Store
