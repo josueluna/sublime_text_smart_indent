@@ -18,6 +18,16 @@ class EngineTests(unittest.TestCase):
         expected = "function x(){\n    if(true){\n        console.log('ok')\n    }\n}\n"
         self.assertEqual(format_text(source, "javascript", "    "), expected)
 
+    def test_css_id_selector_keeps_hash_for_indentation(self):
+        source = "#app {\ncolor: red;\n}\n"
+        expected = "#app {\n    color: red;\n}\n"
+        self.assertEqual(format_text(source, "css", "    "), expected)
+
+    def test_javascript_private_field_keeps_hash_for_indentation(self):
+        source = "class X {\n#config = {\nenabled: true\n}\n}\n"
+        expected = "class X {\n    #config = {\n        enabled: true\n    }\n}\n"
+        self.assertEqual(format_text(source, "javascript", "    "), expected)
+
     def test_python_blocks(self):
         source = "def x():\nif True:\nreturn 1\n"
         expected = "def x():\n    if True:\n        return 1\n"

@@ -52,7 +52,6 @@ def _sanitize_for_braces(line):
 
     # Basic single-line comment removal for common languages.
     stripped = re.sub(r"//.*$", "", stripped)
-    stripped = re.sub(r"#.*$", "", stripped)
     return stripped
 
 
