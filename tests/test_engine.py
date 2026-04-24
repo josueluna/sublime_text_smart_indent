@@ -52,6 +52,26 @@ class EngineTests(unittest.TestCase):
         source = "hello\nworld\n"
         self.assertEqual(format_text(source, "text", "    "), source)
 
+    def test_json_nested_objects_and_arrays(self):
+        source = "{\n\"users\": [\n{\n\"name\": \"Ada\"\n}\n]\n}\n"
+        expected = "{\n    \"users\": [\n        {\n            \"name\": \"Ada\"\n        }\n    ]\n}\n"
+        self.assertEqual(format_text(source, "json", "    "), expected)
+
+    def test_html_comment_does_not_change_depth(self):
+        source = "<div>\n<!-- comment -->\n<span>Text</span>\n</div>\n"
+        expected = "<div>\n    <!-- comment -->\n    <span>Text</span>\n</div>\n"
+        self.assertEqual(format_text(source, "html", "    "), expected)
+
+    def test_python_elif_and_else_dedent(self):
+        source = "if x:\nprint(1)\nelif y:\nprint(2)\nelse:\nprint(3)\n"
+        expected = "if x:\n    print(1)\nelif y:\n    print(2)\nelse:\n    print(3)\n"
+        self.assertEqual(format_text(source, "python", "    "), expected)
+
+    def test_markdown_nested_list_indentation(self):
+        source = "- parent\n  - child\n- sibling\n"
+        expected = "- parent\n  - child\n- sibling\n"
+        self.assertEqual(format_text(source, "markdown", "  "), expected)
+
 
 class FormatOnSaveAllowlistTests(unittest.TestCase):
     def test_none_allowlist_allows_all_languages(self):
