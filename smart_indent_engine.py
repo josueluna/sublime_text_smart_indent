@@ -155,6 +155,11 @@ def format_text(text, language, indent_unit):
         if _line_starts_with_closer(raw, language):
             effective_depth = clamp_depth(depth - 1)
 
+        if language == "markdown":
+            list_depth = _markdown_list_indent(raw)
+            if list_depth is not None:
+                effective_depth = clamp_depth(list_depth - 1)
+
         if language == "python" and _python_is_docline(raw):
             # Keep docstring fence lines aligned with current scope.
             formatted.append((indent_unit * clamp_depth(effective_depth)) + stripped)
@@ -183,7 +188,11 @@ def format_text(text, language, indent_unit):
             else:
                 depth = 0
         else:
-            depth = clamp_depth(effective_depth + _brace_delta(raw))
+            delta = _brace_delta(raw)
+            if _line_starts_with_closer(raw, language):
+                depth = clamp_depth(effective_depth + max(delta, 0))
+            else:
+                depth = clamp_depth(effective_depth + delta)
 
     suffix = "\n" if text.endswith("\n") else ""
     return "\n".join(formatted) + suffix
