@@ -64,7 +64,7 @@ def _brace_delta(line):
 
 def _line_starts_with_closer(line, language):
     stripped = line.lstrip()
-    if language in ("html", "jsx", "tsx"):
+    if language in ("html", "jsx", "tsx", "vue"):
         return bool(_HTML_CLOSE_TAG_RE.match(stripped))
     if language == "python":
         return _python_starts_dedent(stripped)
@@ -162,7 +162,7 @@ def format_text(text, language, indent_unit):
             if list_depth is not None:
                 effective_depth = clamp_depth(list_depth - 1)
 
-        if language == "html" and html_embedded_language:
+        if language in ("html", "vue") and html_embedded_language:
             if lowered.startswith(("</script", "</style")):
                 effective_depth = clamp_depth(depth - 1)
             elif _line_starts_with_closer(raw, html_embedded_language):
@@ -176,7 +176,7 @@ def format_text(text, language, indent_unit):
 
         formatted.append((indent_unit * clamp_depth(effective_depth)) + stripped)
 
-        if language == "html" and html_embedded_language and not lowered.startswith(("</script", "</style")):
+        if language in ("html", "vue") and html_embedded_language and not lowered.startswith(("</script", "</style")):
             delta = _brace_delta(raw)
             if _line_starts_with_closer(raw, html_embedded_language):
                 depth = clamp_depth(effective_depth + max(delta, 0))
@@ -184,10 +184,10 @@ def format_text(text, language, indent_unit):
                 depth = clamp_depth(effective_depth + delta)
             continue
 
-        if language in ("html", "jsx", "tsx"):
+        if language in ("html", "jsx", "tsx", "vue"):
             depth = clamp_depth(effective_depth + _html_delta(raw))
 
-            if language == "html":
+            if language in ("html", "vue"):
                 if lowered.startswith("<script"):
                     html_embedded_language = "javascript"
                 elif lowered.startswith("</script") and html_embedded_language == "javascript":
