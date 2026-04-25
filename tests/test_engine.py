@@ -43,6 +43,16 @@ class EngineTests(unittest.TestCase):
         expected = "<div>\n    <img src='x.png'>\n    <p>caption</p>\n</div>\n"
         self.assertEqual(format_text(source, "html", "    "), expected)
 
+    def test_html_style_block_uses_css_indentation(self):
+        source = "<style>\n.card {\ncolor: red;\n}\n</style>\n"
+        expected = "<style>\n    .card {\n        color: red;\n    }\n</style>\n"
+        self.assertEqual(format_text(source, "html", "    "), expected)
+
+    def test_html_script_block_uses_javascript_indentation(self):
+        source = "<script>\nif (ready) {\nconsole.log('ok')\n}\n</script>\n"
+        expected = "<script>\n    if (ready) {\n        console.log('ok')\n    }\n</script>\n"
+        self.assertEqual(format_text(source, "html", "    "), expected)
+
     def test_jsx_tags_indent_like_html(self):
         source = "<div>\n<span>Hello</span>\n</div>\n"
         expected = "<div>\n    <span>Hello</span>\n</div>\n"

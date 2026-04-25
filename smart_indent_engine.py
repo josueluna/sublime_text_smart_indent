@@ -131,9 +131,11 @@ def format_text(text, language, indent_unit):
     formatted = []
     depth = 0
     in_markdown_fence = False
+    html_embedded_language = None
 
     for raw in lines:
         stripped = raw.strip()
+        lowered = stripped.lower()
 
         if language == "markdown" and stripped.startswith("```"):
             formatted.append(stripped)
@@ -160,6 +162,12 @@ def format_text(text, language, indent_unit):
             if list_depth is not None:
                 effective_depth = clamp_depth(list_depth - 1)
 
+        if language == "html" and html_embedded_language:
+            if lowered.startswith(("</script", "</style")):
+                effective_depth = clamp_depth(depth - 1)
+            elif _line_starts_with_closer(raw, html_embedded_language):
+                effective_depth = clamp_depth(depth - 1)
+
         if language == "python" and _python_is_docline(raw):
             # Keep docstring fence lines aligned with current scope.
             formatted.append((indent_unit * clamp_depth(effective_depth)) + stripped)
@@ -168,8 +176,26 @@ def format_text(text, language, indent_unit):
 
         formatted.append((indent_unit * clamp_depth(effective_depth)) + stripped)
 
+        if language == "html" and html_embedded_language and not lowered.startswith(("</script", "</style")):
+            delta = _brace_delta(raw)
+            if _line_starts_with_closer(raw, html_embedded_language):
+                depth = clamp_depth(effective_depth + max(delta, 0))
+            else:
+                depth = clamp_depth(effective_depth + delta)
+            continue
+
         if language in ("html", "jsx", "tsx"):
             depth = clamp_depth(effective_depth + _html_delta(raw))
+
+            if language == "html":
+                if lowered.startswith("<script"):
+                    html_embedded_language = "javascript"
+                elif lowered.startswith("</script") and html_embedded_language == "javascript":
+                    html_embedded_language = None
+                elif lowered.startswith("<style"):
+                    html_embedded_language = "css"
+                elif lowered.startswith("</style") and html_embedded_language == "css":
+                    html_embedded_language = None
         elif language == "python":
             if _python_open_block(raw):
                 depth = effective_depth + 1
