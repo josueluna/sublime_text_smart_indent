@@ -14,6 +14,7 @@ _EXTENSION_TO_LANGUAGE = {
     ".ts": "typescript",
     ".tsx": "tsx",
     ".jsx": "jsx",
+    "vue": "vue",
     ".json": "json",
     ".py": "python",
     ".md": "markdown",
@@ -42,6 +43,8 @@ def detect_language(file_name=None, syntax=None):
         lang = "tsx"
     elif "typescript" in syntax_name:
         lang = "typescript"
+    elif "vue" in syntax_name:
+        lang = "vue"
     elif "jsx" in syntax_name:
         lang = "jsx"
     elif "javascript" in syntax_name:

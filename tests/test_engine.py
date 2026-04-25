@@ -13,6 +13,17 @@ class DetectionTests(unittest.TestCase):
 
 
 class EngineTests(unittest.TestCase):
+
+    def test_vue_template_tags_indent_like_html(self):
+        source = "<template>\n<div>\n<span>Hello</span>\n</div>\n</template>\n"
+        expected = "<template>\n    <div>\n        <span>Hello</span>\n    </div>\n</template>\n"
+        self.assertEqual(format_text(source, "vue", "    "), expected)
+
+    def test_vue_script_block_uses_javascript_indentation(self):
+        source = "<script>\nif (ready) {\nconsole.log('ok')\n}\n</script>\n"
+        expected = "<script>\n    if (ready) {\n        console.log('ok')\n    }\n</script>\n"
+        self.assertEqual(format_text(source, "vue", "    "), expected)
+
     def test_js_braces(self):
         source = "function x(){\nif(true){\nconsole.log('ok')\n}\n}\n"
         expected = "function x(){\n    if(true){\n        console.log('ok')\n    }\n}\n"
