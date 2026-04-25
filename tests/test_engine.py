@@ -43,6 +43,21 @@ class EngineTests(unittest.TestCase):
         expected = "<div>\n    <img src='x.png'>\n    <p>caption</p>\n</div>\n"
         self.assertEqual(format_text(source, "html", "    "), expected)
 
+    def test_jsx_tags_indent_like_html(self):
+        source = "<div>\n<span>Hello</span>\n</div>\n"
+        expected = "<div>\n    <span>Hello</span>\n</div>\n"
+        self.assertEqual(format_text(source, "jsx", "    "), expected)
+
+    def test_tsx_nested_tags_indent_like_html(self):
+        source = "<section>\n<div>\nText\n</div>\n</section>\n"
+        expected = "<section>\n    <div>\n        Text\n    </div>\n</section>\n"
+        self.assertEqual(format_text(source, "tsx", "    "), expected)
+
+    def test_jsx_self_closing_tag_does_not_increase_depth(self):
+        source = "<div>\n<img src=\"x.png\" />\n<span>Caption</span>\n</div>\n"
+        expected = "<div>\n    <img src=\"x.png\" />\n    <span>Caption</span>\n</div>\n"
+        self.assertEqual(format_text(source, "jsx", "    "), expected)
+
     def test_markdown_code_fence_preserved(self):
         source = "- item\n```js\nfunction x(){\nreturn 1\n}\n```\n"
         expected = "- item\n```js\nfunction x(){\nreturn 1\n}\n```\n"

@@ -64,7 +64,7 @@ def _brace_delta(line):
 
 def _line_starts_with_closer(line, language):
     stripped = line.lstrip()
-    if language == "html":
+    if language in ("html", "jsx", "tsx"):
         return bool(_HTML_CLOSE_TAG_RE.match(stripped))
     if language == "python":
         return _python_starts_dedent(stripped)
@@ -168,7 +168,7 @@ def format_text(text, language, indent_unit):
 
         formatted.append((indent_unit * clamp_depth(effective_depth)) + stripped)
 
-        if language == "html":
+        if language in ("html", "jsx", "tsx"):
             depth = clamp_depth(effective_depth + _html_delta(raw))
         elif language == "python":
             if _python_open_block(raw):
